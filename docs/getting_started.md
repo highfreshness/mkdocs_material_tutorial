@@ -63,7 +63,7 @@ mkdocs serve
 1. Make directory `.github/workflows`
 2. Make file `ci.yml`
 3. Input code ci.yml(use github action)
-   ```yml
+   ```yaml
     name: ci 
     on:
       push:
