@@ -59,10 +59,10 @@ Run the service by typing mkdocs serve at the command line (default port is 8000
 mkdocs serve
 ```
 
-### Deploy
+### Deploy(Use github action)
 1. Make directory `.github/workflows`
 2. Make file `ci.yml`
-3. Input code ci.yml(use github action)
+3. Input code `ci.yml`
    ```yaml
     name: ci 
     on:
