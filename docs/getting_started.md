@@ -13,17 +13,17 @@ Github<br>
 Add the text to vscode ==settings.json==
 ```yaml
 {
-"yaml.schemas": {
-    "https://squidfunk.github.io/mkdocs-material/schema.json": "mkdocs.yml"
-},
-"yaml.customTags": [ 
-    "!ENV scalar",
-    "!ENV sequence",
-    "!relative scalar",
-    "tag:yaml.org,2002:python/name:material.extensions.emoji.to_svg",
-    "tag:yaml.org,2002:python/name:material.extensions.emoji.twemoji",
-    "tag:yaml.org,2002:python/name:pymdownx.superfences.fence_code_format"
-]
+  "yaml.schemas": {
+      "https://squidfunk.github.io/mkdocs-material/schema.json": "mkdocs.yml"
+  },
+  "yaml.customTags": [ 
+      "!ENV scalar",
+      "!ENV sequence",
+      "!relative scalar",
+      "tag:yaml.org,2002:python/name:material.extensions.emoji.to_svg",
+      "tag:yaml.org,2002:python/name:material.extensions.emoji.twemoji",
+      "tag:yaml.org,2002:python/name:pymdownx.superfences.fence_code_format"
+  ]
 }
 ```
 
@@ -58,6 +58,42 @@ Run the service by typing mkdocs serve at the command line (default port is 8000
 ```bash
 mkdocs serve
 ```
+
+### Deploy
+1. Make directory `.github/workflows`
+2. Make file `ci.yml`
+3. Input code ci.yml(use github action)
+   ```yml
+    name: ci 
+    on:
+      push:
+        branches:
+          - master 
+          - main
+    permissions:
+      contents: write
+    jobs:
+      deploy:
+        runs-on: ubuntu-latest
+        steps:
+          - uses: actions/checkout@v4
+          - name: Configure Git Credentials
+            run: |
+              git config user.name github-actions[bot]
+              git config user.email 41898282+github-actions[bot]@users.noreply.github.com
+          - uses: actions/setup-python@v4
+            with:
+              python-version: 3.x
+          - run: echo "cache_id=$(date --utc '+%V')" >> $GITHUB_ENV 
+          - uses: actions/cache@v3
+            with:
+              key: mkdocs-material-${{ env.cache_id }}
+              path: .cache
+              restore-keys: |
+                mkdocs-material-
+          - run: pip install mkdocs-material 
+          - run: mkdocs gh-deploy --force
+   ```
 
 ## QnA
 
